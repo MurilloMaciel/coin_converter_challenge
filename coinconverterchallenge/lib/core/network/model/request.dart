@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 
 class Request {
 
-  static const _catchError = "Ocorreu um erro inesperado ao tentar comunicar com o servidor.";
+  static const _catchError = "An unexpected error occurred while trying to communicate with the server.";
   static const _accessKey = "access_key";
 
   final Dio _dio = Dio();
