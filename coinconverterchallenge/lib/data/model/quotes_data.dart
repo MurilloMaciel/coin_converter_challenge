@@ -26,7 +26,7 @@ class QuotesData {
     "privacy": privacy,
     "timestamp": timestamp,
     "source": source,
-    "currencies": quotes,
+    "quotes": quotes,
   };
 }
 

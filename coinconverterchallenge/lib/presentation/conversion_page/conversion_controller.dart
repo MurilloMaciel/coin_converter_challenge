@@ -1,3 +1,4 @@
+import 'package:coinconverterchallenge/core/helper/navigation_helper.dart';
 import 'package:coinconverterchallenge/core/network/model/request_state.dart';
 import 'package:coinconverterchallenge/core/network/model/resource.dart';
 import 'package:coinconverterchallenge/domain/model/quotes.dart';
@@ -5,6 +6,7 @@ import 'package:coinconverterchallenge/domain/usecase/calculate_coin_conversion_
 import 'package:coinconverterchallenge/domain/usecase/get_quotes_use_case.dart';
 import 'package:coinconverterchallenge/presentation/model/conversion_page_arguments.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 const CONVERSION_VALUE_MAX_LENGHT = 8;
 
@@ -88,7 +90,6 @@ class ConversionController extends ChangeNotifier {
     }
   }
 
-
   void onPressedDone() {
     if (valueFrom.isEmpty || double.parse(valueFrom) <= 0) {
       _showError("Conversion value needed");
@@ -111,5 +112,9 @@ class ConversionController extends ChangeNotifier {
   void onChangeCoinTo(String coinTo) {
     this.currencyTo = coinTo;
     notifyListeners();
+  }
+
+  void onPressedGoBack() {
+    GetIt.instance.get<NavigationHelper>().goBack();
   }
 }

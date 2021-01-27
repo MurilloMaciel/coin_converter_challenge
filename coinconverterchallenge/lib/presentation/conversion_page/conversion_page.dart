@@ -1,13 +1,10 @@
-import 'package:coinconverterchallenge/core/helper/navigation_helper.dart';
 import 'package:coinconverterchallenge/core/network/model/request_state.dart';
 import 'package:coinconverterchallenge/core/widgets/icon_info.dart';
 import 'file:///E:/repos/btg_coin_conversion/coin_converter_challenge/coinconverterchallenge/lib/presentation/conversion_page/widgets/keyboard.dart';
 import 'package:coinconverterchallenge/core/widgets/loader.dart';
-import 'package:coinconverterchallenge/domain/model/currencies.dart';
 import 'package:coinconverterchallenge/presentation/conversion_page/conversion_controller.dart';
 import 'package:coinconverterchallenge/presentation/model/conversion_page_arguments.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class ConversionPage extends StatefulWidget {
@@ -21,6 +18,8 @@ class _ConversionPageState extends State<ConversionPage> {
   ConversionPageArguments args;
 
   ConversionController _controller;
+
+  double height;
 
   void _initialSetup() {
     args = args == null ? ModalRoute.of(context).settings.arguments : args;
@@ -36,6 +35,7 @@ class _ConversionPageState extends State<ConversionPage> {
 
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
     _initialSetup();
     return Scaffold(
       key: _controller.key,
@@ -69,19 +69,22 @@ class _ConversionPageState extends State<ConversionPage> {
 
   Widget _pageBody(BuildContext context) => Column(
     children: [
-      Spacer(),
-      _back(context),
-      _content(context),
-      Keyboard(),
+      SizedBox(height: height * 0.2, child: _back(context)),
+      SizedBox(height: height * 0.3, child: _content(context)),
+      SizedBox(height: height * 0.5, child: Keyboard()),
+      // _content(context),
+      // Keyboard(),
     ],
   );
 
-  Widget _back(BuildContext context) => Padding(
-    padding: EdgeInsets.all(20),
+  Widget _back(BuildContext context) => Container(
+    padding: EdgeInsets.only(left: 20),
+    width: MediaQuery.of(context).size.width,
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         FloatingActionButton(
-          onPressed: GetIt.instance.get<NavigationHelper>().goBack,
+          onPressed: _controller.onPressedGoBack,
           mini: true,
           backgroundColor: Theme.of(context).primaryColorDark,
           child: Icon(

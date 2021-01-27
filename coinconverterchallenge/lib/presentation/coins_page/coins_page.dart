@@ -1,15 +1,9 @@
-import 'dart:ffi';
-
-import 'package:coinconverterchallenge/core/helper/navigation_helper.dart';
-import 'package:coinconverterchallenge/core/helper/routes.dart';
 import 'package:coinconverterchallenge/core/network/model/error_response.dart';
 import 'package:coinconverterchallenge/core/widgets/icon_info.dart';
 import 'package:coinconverterchallenge/core/widgets/loader.dart';
 import 'package:coinconverterchallenge/domain/model/currencies.dart';
 import 'package:coinconverterchallenge/presentation/coins_page/coins_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
@@ -54,9 +48,7 @@ class _CoinsPageState extends State<CoinsPage> {
             pinned: true,
             floating: true,
             actions: [
-              IconButton(icon: Icon(Icons.text_snippet_outlined, color: Colors.white,), onPressed: () {
-                GetIt.instance.get<NavigationHelper>().goTo(Routes.ABOUT_ROUTE);
-              }),
+              IconButton(icon: Icon(Icons.text_snippet_outlined, color: Colors.white,), onPressed: _controller.onPressedGoToAbout),
               IconButton(icon: Icon(Icons.filter_list_alt, color: Colors.white,), onPressed: null),
             ],
             forceElevated: innerBoxIsScrolled,
@@ -103,7 +95,7 @@ class _CoinsPageState extends State<CoinsPage> {
   Widget _coinList(BuildContext context, Currencies currencies) => ListView.builder(
     itemCount: currencies.currencies.length,
     itemBuilder: (context, index) {
-      String key = currencies.currencies.keys.elementAt(index);
+      String key = currencies.currencies.isEmpty ? "" : currencies.currencies.keys.elementAt(index);
       return ListTile(
         onTap: () { _controller.onTapCurrency(key); },
         title: Text(
@@ -126,5 +118,4 @@ class _CoinsPageState extends State<CoinsPage> {
       );
     },
   );
-
 }

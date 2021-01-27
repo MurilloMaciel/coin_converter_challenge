@@ -16,7 +16,10 @@ dependencies:
   dartz: ^0.9.2
   dio: ^3.0.10
   provider: ^4.3.3
+  sembast: ^2.4.8+1
   get_it: ^5.0.6
+  path_provider: ^1.6.27
+  connectivity: ^2.0.2
 
 dev_dependencies:
   flutter_test:

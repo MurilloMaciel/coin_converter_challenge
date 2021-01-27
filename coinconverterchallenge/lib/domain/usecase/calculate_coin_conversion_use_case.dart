@@ -6,39 +6,29 @@ import 'package:dartz/dartz.dart';
 class CalculateCoinConversionUseCase {
 
   String execute(String valueFrom, String currencyFrom, String currencyTo, Map<String, double> quotes) {
+
+    final double valueToCalculate = double.parse(valueFrom);
+    double result;
     if (currencyFrom == "USD") {
-      return _calculateFromUsd(valueFrom, currencyTo, quotes);
+      result = _calculateFromUsd(valueToCalculate, quotes["USD$currencyTo"]);
     } else if (currencyTo == "USD") {
-      return _calculateToUsd(valueFrom, currencyFrom, quotes);
+      result = _calculateToUsd(valueToCalculate, quotes["USD$currencyFrom"]);
     } else {
-      return _calculateFromOtherCurrencyFrom(valueFrom, currencyFrom, currencyTo, quotes);
+      result = _calculateFromOtherCurrencyFrom(valueToCalculate, quotes["USD$currencyFrom"], quotes["USD$currencyTo"]);
     }
-  }
-
-  String _calculateFromUsd(String valueFrom, String currencyTo, Map<String, double> quotes) {
-    final quote = quotes["USD$currencyTo"];
-    final double valueToCalculate = double.parse(valueFrom);
-    final result = valueToCalculate * quote;
     return result.toStringAsFixed(2);
   }
 
-  String _calculateToUsd(String valueFrom, String currencyFrom, Map<String, double> quotes) {
-    final quote = quotes["USD$currencyFrom"];
-    final double valueToCalculate = double.parse(valueFrom);
-    final result = valueToCalculate / quote;
-    return result.toStringAsFixed(2);
-  }
+  double _calculateFromUsd(double valueToCalculate, double quote) => valueToCalculate * quote;
 
-  String _calculateFromOtherCurrencyFrom(String valueFrom, String currencyFrom, String currencyTo, Map<String, double> quotes) {
-    final quoteUsd = quotes["USD$currencyFrom"];
-    final quoteCurrencyTo = quotes["USD$currencyTo"];
-    final double valueToCalculate = double.parse(valueFrom);
+  double _calculateToUsd(double valueToCalculate, double quote) => valueToCalculate / quote;
+
+  double _calculateFromOtherCurrencyFrom(double valueToCalculate, double quoteUsd, double quoteCurrencyTo) {
     final double valueToUsd = valueToCalculate / quoteUsd;
     final double finalValue = valueToUsd * quoteCurrencyTo;
-    // sll to aud
     if (finalValue < 0.001) {
-      return finalValue.toStringAsExponential(2);
+      return finalValue;
     }
-    return finalValue.toStringAsFixed(2);
+    return finalValue;
   }
 }

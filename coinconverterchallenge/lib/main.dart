@@ -1,7 +1,6 @@
 import 'package:coinconverterchallenge/presentation/coins_page/coins_controller.dart';
 import 'package:coinconverterchallenge/presentation/conversion_page/conversion_controller.dart';
 import 'package:coinconverterchallenge/presentation/splash_page/splash_controller.dart';
-import 'package:coinconverterchallenge/presentation/test/test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +29,6 @@ class MyChallengeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<TestController>.value(value: Di.getTestController()),
           Provider<SplashController>(create: (context) => Di.getSplashController()),
           Provider<CoinsController>(create: (context) => Di.getCoinsController()),
           ChangeNotifierProvider<ConversionController>.value(value: Di.getConversionController()),

@@ -27,4 +27,8 @@ class CoinsController {
         arguments: ConversionPageArguments(currencies.currencies, keyTapped)
     );
   }
+
+  void onPressedGoToAbout() {
+    GetIt.instance.get<NavigationHelper>().goTo(Routes.ABOUT_ROUTE);
+  }
 }
