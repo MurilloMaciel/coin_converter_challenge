@@ -55,7 +55,10 @@ class AboutPage extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.85,
           child: Text(
-            "I appreciate ....",
+            "       The Coin Converter Challenge is an application developed for a job process. This Project consumes CurrencyLayer Api in free version and uses Clean Architecture, Provider and ChangeNotifier as state manager, Dio package for rest api integrations and Sembast, a NoSQL database to local storage, to make the app works offline.\n"
+            "       I choose to use English in the entire app because the return of the api is in English.\n"
+            "       ",
+            textAlign: TextAlign.justify,
             style: TextStyle(
                 color: Theme.of(context).primaryColorDark,
             ),
