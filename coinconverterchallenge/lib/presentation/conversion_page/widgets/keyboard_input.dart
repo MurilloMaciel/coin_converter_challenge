@@ -13,7 +13,7 @@ class KeyboardInput extends StatelessWidget {
       onTap: onPressed,
       child: CircleAvatar(
         backgroundColor: Theme.of(context).primaryColor,
-        radius: 30,
+        radius: 25,
         child: content,
       ),
     );

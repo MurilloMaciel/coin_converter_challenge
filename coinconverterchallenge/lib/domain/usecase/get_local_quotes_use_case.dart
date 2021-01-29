@@ -9,5 +9,5 @@ class GetLocalQuotesUseCase {
 
   GetLocalQuotesUseCase(this._repository);
 
-  Future<Either<Quotes, AccessError>> execute() async => await _repository.getQuotes();
+  Future<Either<AccessError, Quotes>> execute() async => await _repository.getQuotes();
 }

@@ -1,4 +1,3 @@
-import 'package:coinconverterchallenge/domain/model/quotes.dart';
 import 'package:coinconverterchallenge/domain/repository/repository.dart';
 
 class DeleteCurrenciesUseCase {

@@ -6,9 +6,9 @@ import 'package:dartz/dartz.dart';
 
 abstract class RemoteDatasource {
 
-  Future<Either<CurrenciesData, ErrorResponse>> getAllCurrencies();
+  Future<Either<ErrorResponse, CurrenciesData>> getAllCurrencies();
 
-  Future<Either<QuotesData, ErrorResponse>> getAllQuotes();
+  Future<Either<ErrorResponse, QuotesData>> getAllQuotes();
 
   Future<NetworkStatus> checkNetworkStatus();
 }

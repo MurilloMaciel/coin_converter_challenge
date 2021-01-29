@@ -1,7 +1,6 @@
 import 'package:coinconverterchallenge/core/helper/navigation_helper.dart';
 import 'package:coinconverterchallenge/core/network/model/request_state.dart';
 import 'package:coinconverterchallenge/core/network/model/resource.dart';
-import 'package:coinconverterchallenge/domain/model/quotes.dart';
 import 'package:coinconverterchallenge/domain/usecase/calculate_coin_conversion_use_case.dart';
 import 'package:coinconverterchallenge/domain/usecase/get_quotes_use_case.dart';
 import 'package:coinconverterchallenge/presentation/model/conversion_page_arguments.dart';
@@ -24,7 +23,10 @@ class ConversionController extends ChangeNotifier {
 
   String currencyFrom;
   String currencyTo;
+  String currencyNameFrom;
+  String currencyNameTo;
 
+  List<String> currencyNames;
   List<String> currencies;
   List<String> conversionNameList;
   Map<String, double> quotes;
@@ -55,12 +57,12 @@ class ConversionController extends ChangeNotifier {
     notifyListeners();
     final result = await _getQuotesUseCase.execute();
     result.fold((left) {
-      quotes = left.quotes; // cada key começa com USD -> USDAED
-      conversionNameList = List.from(left.quotes.keys);
-      resource.setSuccess();
+      resource.setError(left.error.info, code: left.error.code);
       notifyListeners();
     }, (right) {
-      resource.setError(right.error.info, code: right.error.code);
+      quotes = right.quotes; // cada key começa com USD -> USDAED
+      conversionNameList = List.from(right.quotes.keys);
+      resource.setSuccess();
       notifyListeners();
     });
   }
@@ -69,8 +71,11 @@ class ConversionController extends ChangeNotifier {
 
   void onReceiveArgs(ConversionPageArguments args) {
     currencies = currencies == null ? List.from(args.currencies.keys) : currencies;
+    currencyNames = currencyNames == null ? List.from(args.currencies.values) : currencyNames;
     currencyFrom = currencyFrom == null ? args.keyTapped : currencyFrom;
     currencyTo = currencyTo == null ? currencies[0] : currencyTo;
+    currencyNameFrom = currencyNameFrom == null ? currencyNames[currencies.indexOf(currencyFrom)] : currencyNameFrom;
+    currencyNameTo = currencyNameTo == null ? currencyNames[0] : currencyNameTo;
   }
 
   void setValueConversionFrom(String value) {
@@ -106,11 +111,13 @@ class ConversionController extends ChangeNotifier {
 
   void onChangeCoinFrom(String coinFrom) {
     this.currencyFrom = coinFrom;
+    currencyNameFrom = currencyNames[currencies.indexOf(currencyFrom)];
     notifyListeners();
   }
 
   void onChangeCoinTo(String coinTo) {
     this.currencyTo = coinTo;
+    currencyNameTo = currencyNames[currencies.indexOf(currencyTo)];
     notifyListeners();
   }
 

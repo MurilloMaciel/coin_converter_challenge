@@ -9,5 +9,5 @@ class GetLocalCurrenciesUseCase {
 
   GetLocalCurrenciesUseCase(this._repository);
 
-  Future<Either<Currencies, AccessError>> execute() async => await _repository.getCurrencies();
+  Future<Either<AccessError, Currencies>> execute() async => await _repository.getCurrencies();
 }

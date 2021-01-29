@@ -22,6 +22,7 @@ dependencies:
   connectivity: ^2.0.2
 
 dev_dependencies:
+  mockito: ^4.1.4
   flutter_test:
     sdk: flutter
 

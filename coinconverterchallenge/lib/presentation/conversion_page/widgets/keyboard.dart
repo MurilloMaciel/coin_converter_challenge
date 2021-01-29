@@ -15,7 +15,7 @@ class Keyboard extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       width: MediaQuery.of(context).size.width,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 24),
+        padding: EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColorDark,
           borderRadius: BorderRadius.only(

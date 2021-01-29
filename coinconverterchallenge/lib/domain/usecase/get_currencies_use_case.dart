@@ -22,7 +22,7 @@ class GetCurrenciesUseCase {
       this._updateLocalCurrenciesUseCase
   );
 
-  Future<Either<Currencies, ErrorResponse>> execute() async {
+  Future<Either<ErrorResponse, Currencies>> execute() async {
     if (await _isNetworkOnline()) {
       return await _executeWithNetworkOnline();
     } else {
@@ -35,33 +35,33 @@ class GetCurrenciesUseCase {
     return status == NetworkStatus.ONLINE;
   }
 
-  Future<Either<Currencies, ErrorResponse>> _executeWithNetworkOnline() async {
+  Future<Either<ErrorResponse, Currencies>> _executeWithNetworkOnline() async {
     final result = await _repository.getAllCurrencies();
     return result.fold(
-        (left) async {
-          await _updateLocalCurrenciesUseCase.execute(left);
+        (left) {
           return Left(left);
         },
-        (right) {
+        (right) async {
+          await _updateLocalCurrenciesUseCase.execute(right);
           return Right(right);
         }
     );
   }
 
-  Future<Either<Currencies, ErrorResponse>> _executeWithNetworkOffline() async {
+  Future<Either<ErrorResponse, Currencies>> _executeWithNetworkOffline() async {
     final result = await _getLocalCurrenciesUseCase.execute();
     return result.fold(
         (left) {
-          return Left(left);
-        },
-        (right) {
-          return Right(ErrorResponse(
+          return Left(ErrorResponse(
               success: false,
               error: ApiError(
                   code: 0,
-                  info: right.message
+                  info: left.message
               )
           ));
+        },
+        (right) {
+          return Right(right);
         }
     );
   }

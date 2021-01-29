@@ -1,4 +1,4 @@
-import 'package:coinconverterchallenge/core/db/AppDatabase.dart';
+import 'package:coinconverterchallenge/core/db/app_database.dart';
 import 'package:coinconverterchallenge/core/db/access_error.dart';
 import 'package:coinconverterchallenge/data/model/currencies_data.dart';
 import 'package:dartz/dartz.dart';
@@ -19,15 +19,17 @@ class CurrenciesDao {
     }
   }
 
-  Future<Either<CurrenciesData, AccessError>> retrieveAll() async {
+  Future<Either<AccessError, CurrenciesData>> retrieveAll() async {
     try {
       final recordSnapshot = await _folder.find(await _db);
-      return Left(recordSnapshot.map((snapshot){
+      return Right(recordSnapshot.map((snapshot){
         return CurrenciesData.fromJson(snapshot.value);
       }).toList()[0]);
     } catch (error) {
       print("retrieveAll currency error: ${error.toString()}");
-      return null;
+      return Left(AccessError(
+        "Ocorreu um erro ao recuperar as moedas disponíveis. Você precisa de internet para recupera-las ao menos uma vez."
+      ));
     }
   }
 

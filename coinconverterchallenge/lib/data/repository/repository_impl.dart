@@ -21,27 +21,27 @@ class RepositoryImpl extends Repository {
   Future<NetworkStatus> checkNetworkStatus() async => await _remoteDatasource.checkNetworkStatus();
 
   @override
-  Future<Either<Currencies, ErrorResponse>> getAllCurrencies() async {
+  Future<Either<ErrorResponse, Currencies>> getAllCurrencies() async {
     final result = await _remoteDatasource.getAllCurrencies();
-    return result.fold((left) => Left(left.mapToCurrencies()), (right) => Right(right));
+    return result.fold((left) => Left(left), (right) => Right(right.mapToCurrencies()));
   }
 
   @override
-  Future<Either<Quotes, ErrorResponse>> getAllQuotes() async {
+  Future<Either<ErrorResponse, Quotes>> getAllQuotes() async {
     final result = await _remoteDatasource.getAllQuotes();
-    return result.fold((left) => Left(left.mapToQuotes()), (right) => Right(right));
+    return result.fold((left) => Left(left), (right) => Right(right.mapToQuotes()));
   }
 
   @override
-  Future<Either<Currencies, AccessError>> getCurrencies() async {
+  Future<Either<AccessError, Currencies>> getCurrencies() async {
     final result = await _localDatasource.getCurrencies();
-    return result.fold((l) => Left(l.mapToCurrencies()), (r) => Right(r));
+    return result.fold((l) => Left(l), (r) => Right(r.mapToCurrencies()));
   }
 
   @override
-  Future<Either<Quotes, AccessError>> getQuotes() async {
+  Future<Either<AccessError, Quotes>> getQuotes() async {
     final result = await _localDatasource.getQuotes();
-    return result.fold((l) => Left(l.mapToQuotes()), (r) => Right(r));
+    return result.fold((l) => Left(l), (r) => Right(r.mapToQuotes()));
   }
 
   @override

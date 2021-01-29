@@ -30,7 +30,7 @@ class MyChallengeApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           Provider<SplashController>(create: (context) => Di.getSplashController()),
-          Provider<CoinsController>(create: (context) => Di.getCoinsController()),
+          ChangeNotifierProvider<CoinsController>.value(value: Di.getCoinsController()),
           ChangeNotifierProvider<ConversionController>.value(value: Di.getConversionController()),
         ],
       child: MaterialApp(

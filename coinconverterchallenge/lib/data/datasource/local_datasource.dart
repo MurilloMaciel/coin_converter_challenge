@@ -9,9 +9,9 @@ abstract class LocalDatasource {
 
   Future insertCurrencies(CurrenciesData currencies);
 
-  Future<Either<QuotesData, AccessError>> getQuotes();
+  Future<Either<AccessError, QuotesData>> getQuotes();
 
-  Future<Either<CurrenciesData, AccessError>> getCurrencies();
+  Future<Either<AccessError, CurrenciesData>> getCurrencies();
 
   Future deleteQuotes();
 

@@ -3,6 +3,7 @@ import 'package:coinconverterchallenge/core/widgets/icon_info.dart';
 import 'package:coinconverterchallenge/core/widgets/loader.dart';
 import 'package:coinconverterchallenge/domain/model/currencies.dart';
 import 'package:coinconverterchallenge/presentation/coins_page/coins_controller.dart';
+import 'package:coinconverterchallenge/presentation/coins_page/widgets/filter_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,16 @@ class _CoinsPageState extends State<CoinsPage> {
     } else return error;
   }
 
+  void _showFilterDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      useSafeArea: true,
+      builder: (context) {
+        return FilterDialog();
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _controller = _controller == null ? Provider.of<CoinsController>(context) : _controller;
@@ -49,7 +60,7 @@ class _CoinsPageState extends State<CoinsPage> {
             floating: true,
             actions: [
               IconButton(icon: Icon(Icons.text_snippet_outlined, color: Colors.white,), onPressed: _controller.onPressedGoToAbout),
-              IconButton(icon: Icon(Icons.filter_list_alt, color: Colors.white,), onPressed: null),
+              IconButton(icon: Icon(Icons.filter_list_alt, color: Colors.white,), onPressed: () { _showFilterDialog(context); }),
             ],
             forceElevated: innerBoxIsScrolled,
             bottom: AppBar(

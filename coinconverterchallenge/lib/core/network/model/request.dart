@@ -26,7 +26,7 @@ class Request {
     options.queryParameters = this.queryParameters;
   }
 
-  Future<Either<Response, ErrorResponse>> execute() async {
+  Future<Either<ErrorResponse, Response>> execute() async {
     try {
       Response response;
       switch (this.httpMethod) {
@@ -36,7 +36,7 @@ class Request {
         case HttpMethod.DELETE: response = await executeDelete(); break;
       }
       if (response == null) {
-        return Right(ErrorResponse(
+        return Left(ErrorResponse(
           success: false,
           error: ApiError(
             code: 0,
@@ -45,9 +45,9 @@ class Request {
         ));
       }
       else if (_success(response.statusCode)) {
-        return Left(response);
+        return Right(response);
       } else {
-        return Right(ErrorResponse(
+        return Left(ErrorResponse(
             success: false,
             error: ApiError(
               code: response.statusCode,
@@ -56,7 +56,7 @@ class Request {
         ));
       }
     } catch (error) {
-      return Right(ErrorResponse(
+      return Left(ErrorResponse(
           success: false,
           error: ApiError(
               code: 0,

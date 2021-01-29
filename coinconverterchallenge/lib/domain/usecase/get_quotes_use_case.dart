@@ -22,7 +22,7 @@ class GetQuotesUseCase {
     this._updateLocalQuotesUseCase
   );
 
-  Future<Either<Quotes, ErrorResponse>> execute() async {
+  Future<Either<ErrorResponse, Quotes>> execute() async {
     if (await _isNetworkOnline()) {
       return await _executeWithNetworkOnline();
     } else {
@@ -35,33 +35,33 @@ class GetQuotesUseCase {
     return status == NetworkStatus.ONLINE;
   }
 
-  Future<Either<Quotes, ErrorResponse>> _executeWithNetworkOnline() async {
+  Future<Either<ErrorResponse, Quotes>> _executeWithNetworkOnline() async {
     final result = await _repository.getAllQuotes();
     return result.fold(
-        (left) async {
-          await _updateLocalQuotesUseCase.execute(left);
+        (left) {
           return Left(left);
         },
-        (right) {
+        (right) async {
+          await _updateLocalQuotesUseCase.execute(right);
           return Right(right);
         }
     );
   }
 
-  Future<Either<Quotes, ErrorResponse>> _executeWithNetworkOffline() async {
+  Future<Either<ErrorResponse, Quotes>> _executeWithNetworkOffline() async {
     final result = await _getLocalQuotesUseCase.execute();
     return result.fold(
         (left) {
-          return Left(left);
+          return Left(ErrorResponse(
+              success: false,
+              error: ApiError(
+                  code: 0,
+                  info: left.message
+              )
+          ));
         },
         (right) {
-          return Right(ErrorResponse(
-            success: false,
-            error: ApiError(
-              code: 0,
-              info: right.message
-            )
-          ));
+          return Right(right);
         }
     );
   }

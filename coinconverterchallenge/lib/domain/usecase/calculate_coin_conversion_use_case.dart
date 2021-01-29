@@ -1,7 +1,4 @@
-import 'package:coinconverterchallenge/core/network/model/error_response.dart';
-import 'package:coinconverterchallenge/domain/model/quotes.dart';
-import 'package:coinconverterchallenge/domain/repository/repository.dart';
-import 'package:dartz/dartz.dart';
+import 'package:coinconverterchallenge/core/extensions/string.dart';
 
 class CalculateCoinConversionUseCase {
 
@@ -27,7 +24,7 @@ class CalculateCoinConversionUseCase {
     final double valueToUsd = valueToCalculate / quoteUsd;
     final double finalValue = valueToUsd * quoteCurrencyTo;
     if (finalValue < 0.001) {
-      return finalValue;
+      return finalValue.toStringAsExponential(2).parseDouble();
     }
     return finalValue;
   }

@@ -12,27 +12,31 @@ import 'package:dartz/dartz.dart';
 class RemoteDataSourceImpl extends RemoteDatasource {
 
   @override
-  Future<Either<CurrenciesData, ErrorResponse>> getAllCurrencies() async {
+  Future<Either<ErrorResponse, CurrenciesData>> getAllCurrencies() async {
     final request = Request(HttpMethod.GET, GET_CURRENCIES_URL);
     final result = await request.execute();
     return result.fold((left) {
-      var test = CurrenciesData.fromJson(left.data);
+      return Left(left);
+    }, (right) {
+      var test = CurrenciesData.fromJson(right.data);
       if (test.privacy != null) {
-        return Left(CurrenciesData.fromJson(left.data));
-      } else return Right(ErrorResponse.fromJson(left.data));
-    }, (right) => Right(right));
+        return Right(CurrenciesData.fromJson(right.data));
+      } else return Left(ErrorResponse.fromJson(right.data));
+    });
   }
 
   @override
-  Future<Either<QuotesData, ErrorResponse>> getAllQuotes() async {
+  Future<Either<ErrorResponse, QuotesData>> getAllQuotes() async {
     final request = Request(HttpMethod.GET, GET_QUOTES_URL);
     final result = await request.execute();
     return result.fold((left) {
-      var test = CurrenciesData.fromJson(left.data);
+      return Left(left);
+    }, (right) {
+      var test = CurrenciesData.fromJson(right.data);
       if (test.privacy != null) {
-        return Left(QuotesData.fromJson(left.data));
-      } else return Right(ErrorResponse.fromJson(left.data));
-    }, (right) => Right(right));
+        return Right(QuotesData.fromJson(right.data));
+      } else return Left(ErrorResponse.fromJson(right.data));
+    });
   }
 
   @override

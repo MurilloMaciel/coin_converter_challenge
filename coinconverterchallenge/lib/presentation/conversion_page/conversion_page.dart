@@ -69,7 +69,9 @@ class _ConversionPageState extends State<ConversionPage> {
 
   Widget _pageBody(BuildContext context) => Column(
     children: [
-      SizedBox(height: height * 0.2, child: _back(context)),
+      SafeArea(child: _back(context)),
+      Spacer(),
+      // SizedBox(height: height * 0.2, child: _back(context)),
       SizedBox(height: height * 0.3, child: _content(context)),
       SizedBox(height: height * 0.5, child: Keyboard()),
       // _content(context),
@@ -78,7 +80,7 @@ class _ConversionPageState extends State<ConversionPage> {
   );
 
   Widget _back(BuildContext context) => Container(
-    padding: EdgeInsets.only(left: 20),
+    padding: EdgeInsets.only(left: 20, top: 16),
     width: MediaQuery.of(context).size.width,
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,7 +108,7 @@ class _ConversionPageState extends State<ConversionPage> {
   );
 
   Widget _content(BuildContext context) => Container(
-    padding: EdgeInsets.fromLTRB(10, 30, 10, 20),
+    padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
     decoration: BoxDecoration(
       color: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.only(
@@ -151,7 +153,7 @@ class _ConversionPageState extends State<ConversionPage> {
 
   Widget _dropDownButtonCurrencyFrom(BuildContext context) => Container(
     width: MediaQuery.of(context).size.width * 0.2,
-    padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+    padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
     alignment: Alignment.center,
     child: Consumer<ConversionController>(
       builder: (context, controller, child) {
@@ -184,7 +186,7 @@ class _ConversionPageState extends State<ConversionPage> {
 
   Widget _dropDownButtonCurrencyTo(BuildContext context) => Container(
     width: MediaQuery.of(context).size.width * 0.2,
-    padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+    padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
     alignment: Alignment.center,
     child: Consumer<ConversionController>(
       builder: (context, controller, child) {
@@ -218,7 +220,7 @@ class _ConversionPageState extends State<ConversionPage> {
 
 
   Widget _resultTable(BuildContext context) {
-    final rowHeight = 45.0;
+    final rowHeight = MediaQuery.of(context).size.height * 0.06;
     return Table(
       children: [
         TableRow(
@@ -227,7 +229,7 @@ class _ConversionPageState extends State<ConversionPage> {
                 alignment: Alignment.center,
                 height: rowHeight,
                 child: Consumer<ConversionController>(
-                  builder: (context, controller, child) => _tableText(context, "From ${controller.currencyFrom}: ")
+                  builder: (context, controller, child) => _tableText(context, "From ${controller.currencyFrom}: ", currencyName: controller.currencyNameFrom)
                 ),
               ),
               Container(
@@ -248,7 +250,7 @@ class _ConversionPageState extends State<ConversionPage> {
                 alignment: Alignment.center,
                 height: rowHeight,
                 child: Consumer<ConversionController>(
-                  builder: (context, controller, child) => _tableText(context, "To ${controller.currencyTo}: ")
+                  builder: (context, controller, child) => _tableText(context, "To ${controller.currencyTo}: ", currencyName: controller.currencyNameTo)
                 ),
               ),
               Container(
@@ -267,12 +269,25 @@ class _ConversionPageState extends State<ConversionPage> {
     );
   }
 
-  Widget _tableText(BuildContext context, String text) => Text(
-    text,
-    style: TextStyle(
-      fontWeight: FontWeight.w800,
-      color: Theme.of(context).scaffoldBackgroundColor,
-      fontSize: 18
-    ),
+  Widget _tableText(BuildContext context, String currency, { String currencyName }) => Column(
+    children: [
+      Text(
+        currency,
+        style: TextStyle(
+          fontWeight: FontWeight.w800,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          fontSize: 18
+        ),
+      ),
+      currencyName == null ? Container() : SizedBox(height: 2,),
+      currencyName == null ? Container() : Text(
+        currencyName,
+        style: TextStyle(
+            fontWeight: FontWeight.w300,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            fontSize: 10
+        ),
+      ),
+    ],
   );
 }

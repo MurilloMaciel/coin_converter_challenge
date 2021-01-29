@@ -1,0 +1,4 @@
+enum CoinsFilter {
+  CURRENCY,
+  NAME
+}

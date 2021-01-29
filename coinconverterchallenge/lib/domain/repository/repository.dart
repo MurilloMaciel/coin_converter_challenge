@@ -9,17 +9,17 @@ abstract class Repository {
 
   Future<NetworkStatus> checkNetworkStatus();
 
-  Future<Either<Currencies, ErrorResponse>> getAllCurrencies();
+  Future<Either<ErrorResponse, Currencies>> getAllCurrencies();
 
-  Future<Either<Quotes, ErrorResponse>> getAllQuotes();
+  Future<Either<ErrorResponse, Quotes>> getAllQuotes();
 
   Future insertQuotes(Quotes quotes);
 
   Future insertCurrencies(Currencies currencies);
 
-  Future<Either<Quotes, AccessError>> getQuotes();
+  Future<Either<AccessError, Quotes>> getQuotes();
 
-  Future<Either<Currencies, AccessError>> getCurrencies();
+  Future<Either<AccessError, Currencies>> getCurrencies();
 
   Future deleteQuotes();
 

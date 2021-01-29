@@ -1,5 +1,3 @@
-import 'package:coinconverterchallenge/domain/model/currencies.dart';
-
 class ConversionPageArguments {
 
   final Map<String, String> currencies;

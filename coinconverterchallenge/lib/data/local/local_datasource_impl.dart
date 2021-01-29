@@ -9,13 +9,13 @@ import 'package:dartz/dartz.dart';
 class LocalDatasourceImpl implements LocalDatasource {
 
   @override
-  Future<Either<CurrenciesData, AccessError>> getCurrencies() async {
+  Future<Either<AccessError, CurrenciesData>> getCurrencies() async {
     final result = await CurrenciesDao().retrieveAll();
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
-  Future<Either<QuotesData, AccessError>> getQuotes() async {
+  Future<Either<AccessError, QuotesData>> getQuotes() async {
     final result = await QuotesDao().retrieveAll();
     return result.fold((l) => Left(l), (r) => Right(r));
   }
